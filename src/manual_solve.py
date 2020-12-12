@@ -10,13 +10,24 @@ import re
 ### result. Name them according to the task ID as in the three
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
-def solve_6a1e5592(x):
-    return x
+def get_upper_half_indices(x):
+    rows, cols = x.shape
+    assert rows == cols
+    for i in range(rows):
+        for j in range(i, rows):
+            yield (i,j)
 
-def solve_b2862040(x):
-    return x
-
-def solve_05269061(x):
+def solve_794b24be(x):
+    x = x.copy()
+    index_iter = get_upper_half_indices(x)
+    rows, cols = x.shape
+    for i in range(rows):
+        for j in range(cols):
+            if x[i][j] != 0:
+                n_i, n_j = next(index_iter)
+                x[n_i][n_j] = 2
+                if n_i != i or n_j != j:
+                    x[i][j] = 0
     return x
 
 
