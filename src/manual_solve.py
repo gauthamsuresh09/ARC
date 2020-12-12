@@ -10,6 +10,7 @@ import re
 ### result. Name them according to the task ID as in the three
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
+
 def solve_0a938d79(x):
     """
     Solves task 0a938d79
@@ -150,6 +151,7 @@ def solve_af902bf9(x):
         x_square[1:dim1-1,dim2-1] = 0     # set the last columns to 0 for all rows except the ones with corner point
         x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] = x_square # set the created square to the original array
     return x_
+
 
 def solve_de1cd16c(x):
     """
