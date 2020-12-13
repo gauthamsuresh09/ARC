@@ -65,6 +65,8 @@ def solve_68b16354(x):
     Solves the task 68b16354
    
     Description:
+        The task involves finding the mirror image of rows in the given array.The rows in the array can be
+        flipped which leads to the solution.
        
     Correctness:
         All the given cases are solved.
@@ -84,6 +86,13 @@ def solve_dc0a314f(x):
     Solves task dc0a314f
     
     Description:
+        This task entails filling in the values for the missing pieces (green colours). I found that for finding the
+        solution,the array should be created as a symmetric one and then the missing pieces should be gleaned from that.
+        To create such a symmetric array, I divide the array into four halves and chose the lower most left part 
+        of the array. After this,I flipped this part vertically to obtain the lower right half and joined the two halves
+        together (left and right). When I flip this horizontally,I get the upper part of the array and from there 
+        I can create the symmetric array.On comparison of this created array with the original array,I can easily find 
+        the solution.
        
     Correctness:
         All the given cases are solved.
@@ -112,6 +121,11 @@ def solve_af902bf9(x):
     Solves task af902bf9
     
     Description:
+        This task involves identifying squares and filling in the center with red colour (2).First, I get the locations
+        of non-zero values in the array. Then, I slice the squares from the array by the locations.The next step
+        is to fill in the red colour for appropriate rows (all rows except rows containing corner points of the square). 
+        Finally, I revert some elements of the square to black/0 (because columns containing corner points of the square
+        should not have red elements)
        
     Correctness:
         All the given cases are solved.
@@ -142,6 +156,12 @@ def solve_de1cd16c(x):
     Solves task de1cd16c
     
     Description:
+        This task is about counting isolated points in a cluster of different colour and returning the cluster 
+        colour/value with the most number of these points. I start with taking the unique elements in the array.
+        Next, for every unique element, I choose an initial point and search for the immediate neighbour. If the
+        element does not have one in the array, then I mark it as the element to be counted. After doing this, 
+        I count this element in the clusters of the other elements and find the maximum count. The cluster with the
+        maximum count is the solution.
        
     Correctness:
         All the given cases are solved.
