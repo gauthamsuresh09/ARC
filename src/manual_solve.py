@@ -63,6 +63,34 @@ def solve_68b16354(x):
     x_ = np.flip(x_,0)     # flip the array horizontally
     return x_              # return the solution
 
+def solve_dc0a314f(x):
+    """
+    Solves task dc0a314f
+    
+    Description:
+       
+    Correctness:
+        All the given cases are solved.
+   
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    
+    dim1,dim2 = x.shape              # get the dimensions(rows,columns respectively) from the array
+    half = int(dim1/2)               # calculate the middle for the rows
+    x_ = x.copy()                    # make a copy of x
+    result = np.argwhere(x_ == 3)    # find the locations of the green squares
+    x3 = x_[half:dim2,0:half]        # get the lower most left part of the array
+    x4 = np.flip(x3,1)               # flip the sliced array from above vertically to get the right half
+    x2 = np.concatenate([x3,x4],axis=1)  # concatenate the arrays together to form the lower half of the original array
+    x1 = np.flip(x2,0)                   # flip the lower half horizontally to get the upper half  
+    x__ = np.concatenate([x1,x2],axis=0) # put the lower half and upper half together to create the array
+    x5 = x__[result[0][0]:result[-1][0]+1,result[0][1]:result[-1][1]+1]  # slice the created array by the location of the green squares
+    return x5                                                            # return the solution
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
