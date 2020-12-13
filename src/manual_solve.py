@@ -12,25 +12,39 @@ import re
 ### must be in the data/training directory, not data/evaluation.
 
 
-def get_upper_half_indices(x):
-    rows, cols = x.shape
-    assert rows == cols
-    for i in range(rows):
-        for j in range(i, rows):
-            yield (i,j)
-
-
 def solve_794b24be(x):
-    x = x.copy()
-    index_iter = get_upper_half_indices(x)
-    rows, cols = x.shape
-    for i in range(rows):
-        for j in range(cols):
-            if x[i][j] != 0:
-                n_i, n_j = next(index_iter)
-                x[n_i][n_j] = 2
-                if n_i != i or n_j != j:
-                    x[i][j] = 0
+    """
+    Solves the task 794b24be
+
+    Description:
+        For this task, we are given a square grid (as Numpy array)
+        with few blocks filled with blue colour. Our task is to take
+        upper-right half triangle of the grid, fill k blocks with red
+        colour by going row-wise from left, where k is the count of
+        blocks with blue colour in the original grid. All the blue blocks
+        in original grid are set to black as well.
+
+    Correctness:
+        All the given cases are solved.
+
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x = x.copy()  # Create copy of input array
+    rows, cols = x.shape  # Get row and column count
+    blue_blocks = x==1  # Get blue blocks
+    blue_indices = np.nonzero(blue_blocks)  # Get indices of blue blocks
+    # Get count of blue blocks
+    # Ref : https://stackoverflow.com/questions/8364674/how-to-count-the-number-of-true-elements-in-a-numpy-bool-array
+    blue_count = np.sum(blue_blocks)
+    x[blue_indices] = 0  # Set blue blocks to black
+    # Get first "blue_count" number of blocks in the
+    # upper half triangle of the grid
+    triu_row_indices, triu_col_indices = map(lambda x: x[:blue_count], np.triu_indices(rows))
+    x[triu_row_indices, triu_col_indices] = 2  # Set the blocks to red
     return x
 
 
