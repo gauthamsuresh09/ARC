@@ -121,6 +121,47 @@ def solve_af902bf9(x):
         x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] = x_square # set the created square to the original array
     return x_
 
+def solve_de1cd16c(x):
+    """
+    Solves task de1cd16c
+    
+    Description:
+       
+    Correctness:
+        All the given cases are solved.
+   
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x_ = x.copy()                               # make a copy of x
+    elements = np.unique(x_)                    # find all unique elements in the array
+    find_element = -1                           # assume the element that is to counted is -1
+    for element in elements:
+        locations = np.argwhere(x_ == element)  # find locations of the given element
+        x0,y0 = locations[0]                    # get the first location where the element is found
+        x1,y1 = locations[1]                    # get the second location where the element is found
+        if abs(x0-x1) == 1 or abs(y0-y1) == 1:  # check if the two elements are close to each other 
+            continue                            # if yes,continue
+        else:
+            find_element = element              # if no, we have found the element that is to be counted
+            break                               # search is completed,break the loop
+    maxcount = 0                                # start with initial count as 0
+    x__ = []                                    # start with initial array as empty
+    for element in elements:
+        if element == find_element:             # if current element is the element to be counted,move to the next element
+            continue
+        else:
+            locations = np.argwhere(x_ == element) # find locations of the current element in the array
+            element_area = x_[locations[0][0]:locations[-1][0]+1,locations[0][1]:locations[-1][1]+1] # slice the original array so as to get a array with current element in majority
+            count = len(element_area[element_area == find_element]) # count the points where the find_element occurs
+            if count > maxcount:
+                maxcount = count                                    # update the maxcount to the largest found count
+                x__ = np.array(element).reshape(1,1)                # reshape the current element as per requirement
+    return x__                                                      # return the solution
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
