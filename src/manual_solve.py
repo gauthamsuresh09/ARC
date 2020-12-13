@@ -44,6 +44,25 @@ def solve_0a938d79(x):
             j +=2*intervals
     return x_
 
+def solve_68b16354(x):
+    """
+    Solves the task 68b16354
+   
+    Description:
+       
+    Correctness:
+        All the given cases are solved.
+   
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x_ = x.copy()          # make a copy of x
+    x_ = np.flip(x_,0)     # flip the array horizontally
+    return x_              # return the solution
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
