@@ -11,6 +11,7 @@ import re
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
 
+
 def solve_0a938d79(x):
     """
     Solves task 0a938d79
@@ -31,35 +32,35 @@ def solve_0a938d79(x):
     Returns:
         A copy of x with required transformations applied
     """
-    dim1,dim2 = x.shape                # get the dimensions(rows,columns respectively) from the array
-    x_ = x.copy()                      # make a copy of x
-    result = np.argwhere(x_ > 0)       # find the locations of the non-zero points
-    values = x_[x_>0]                  # get the values of the non-zero points
-    if dim1 > dim2:                    # check if rows are greater than columns
-        index0 = result[0][0]          # get the row index of the first non-zero point
-        index1 = result[1][0]          # get the row index of the second non-zero point
-        intervals = index1-index0      # find the distance between them
-        i = index0                     # start from index0
-        j = index1                     # start from index1
+    dim1,dim2 = x.shape  # get the dimensions(rows,columns respectively) from the array
+    x_ = x.copy()  # make a copy of x
+    result = np.argwhere(x_ > 0)  # find the locations of the non-zero points
+    values = x_[x_>0]  # get the values of the non-zero points
+    if dim1 > dim2:  # check if rows are greater than columns
+        index0 = result[0][0]  # get the row index of the first non-zero point
+        index1 = result[1][0]  # get the row index of the second non-zero point
+        intervals = index1-index0  # find the distance between them
+        i = index0  # start from index0
+        j = index1  # start from index1
         while i < dim1:
-            x_[i] = values[0]          # assign the first non-zero values to row i
-            i+=2*intervals             # increment by twice the interval size
+            x_[i] = values[0]  # assign the first non-zero values to row i
+            i+=2*intervals  # increment by twice the interval size
         while j < dim1:
-            x_[j] = values[1]          # assign the second non-zero values to row j
-            j +=2*intervals            # increment by twice the interval size
+            x_[j] = values[1]  # assign the second non-zero values to row j
+            j +=2*intervals  # increment by twice the interval size
     else:
-        index0 = result[0][1]          # get the column index of the first non-zero point
-        index1 = result[1][1]          # get the column index of the second non-zero point
-        intervals = index1-index0      # find the distance between them
-        i = index0                     # start from index0
-        j = index1                     # start from index1
+        index0 = result[0][1]  # get the column index of the first non-zero point
+        index1 = result[1][1]  # get the column index of the second non-zero point
+        intervals = index1-index0  # find the distance between them
+        i = index0  # start from index0
+        j = index1  # start from index1
         while i < dim2:
-            x_[:,i] = values[0]       # assign the first non-zero values to column i
-            i +=2*intervals           # increment by twice the interval size
+            x_[:,i] = values[0]  # assign the first non-zero values to column i
+            i +=2*intervals  # increment by twice the interval size
         while j < dim2:
-            x_[:,j] = values[1]       # assign the second non-zero values to column j
-            j +=2*intervals           # increment by twice the interval size
-    return x_                         # return solution
+            x_[:,j] = values[1]  # assign the second non-zero values to column j
+            j +=2*intervals  # increment by twice the interval size
+    return x_  # return solution
 
 
 def solve_68b16354(x):
@@ -80,9 +81,9 @@ def solve_68b16354(x):
     Returns:
         A copy of x with required transformations applied
     """
-    x_ = x.copy()          # make a copy of x
-    x_ = np.flip(x_,0)     # flip the array horizontally
-    return x_              # return the solution
+    x_ = x.copy()  # make a copy of x
+    x_ = np.flip(x_,0)  # flip the array horizontally
+    return x_  # return the solution
 
 
 def solve_dc0a314f(x):
@@ -109,17 +110,19 @@ def solve_dc0a314f(x):
         A copy of x with required transformations applied
     """
     
-    dim1,dim2 = x.shape              # get the dimensions(rows,columns respectively) from the array
-    half = int(dim1/2)               # calculate the middle for the rows
-    x_ = x.copy()                    # make a copy of x
-    result = np.argwhere(x_ == 3)    # find the locations of the green squares
-    x3 = x_[half:dim2,0:half]        # get the lower most left part of the array
-    x4 = np.flip(x3,1)               # flip the sliced array from above vertically to get the right half
+    dim1,dim2 = x.shape  # get the dimensions(rows,columns respectively) from the array
+    half = int(dim1/2)  # calculate the middle for the rows
+    x_ = x.copy()  # make a copy of x
+    result = np.argwhere(x_ == 3)  # find the locations of the green squares
+    x3 = x_[half:dim2,0:half]  # get the lower most left part of the array
+    x4 = np.flip(x3,1)  # flip the sliced array from above vertically to get the right half
     x2 = np.concatenate([x3,x4],axis=1)  # concatenate the arrays together to form the lower half of the original array
-    x1 = np.flip(x2,0)                   # flip the lower half horizontally to get the upper half  
-    x__ = np.concatenate([x1,x2],axis=0) # put the lower half and upper half together to create the array
-    x5 = x__[result[0][0]:result[-1][0]+1,result[0][1]:result[-1][1]+1]  # slice the created array by the location of the green squares
-    return x5                                                            # return the solution
+    x1 = np.flip(x2,0)  # flip the lower half horizontally to get the upper half
+    x__ = np.concatenate([x1,x2],axis=0)  # put the lower half and upper half together to create the array
+    # slice the created array by the location of the green squares
+    x5 = x__[result[0][0]:result[-1][0]+1,result[0][1]:result[-1][1]+1]
+    return x5  # return the solution
+
 
 def solve_af902bf9(x):
     """
@@ -142,19 +145,19 @@ def solve_af902bf9(x):
     Returns:
         A copy of x with required transformations applied
     """
-    x_ = x.copy()                    # make a copy of x
-    result = np.argwhere(x_>0)       # find the locations of the corner point of the squares
+    x_ = x.copy()  # make a copy of x
+    result = np.argwhere(x_>0)  # find the locations of the corner point of the squares
     i = 0                           
     while i < len(result):           
-        corner1 = result[i]          # get the left first corner on top of the square
-        corner4 = result[i+3]        # get the right most corner on bottom of the square
-        i+=4                         # increment for the next square
+        corner1 = result[i]  # get the left first corner on top of the square
+        corner4 = result[i+3]  # get the right most corner on bottom of the square
+        i += 4  # increment for the next square
         x_square = x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] # slice the square from the array
-        dim1,dim2 = x_square.shape        # get the dimensions(rows,columns respectively) from the array
-        x_square[1:dim1-1] = 2            # set the rows to 2 for all rows except the ones with corner point
-        x_square[1:dim1-1,0] = 0          # set the first columns to 0 for all rows except the ones with corner point
-        x_square[1:dim1-1,dim2-1] = 0     # set the last columns to 0 for all rows except the ones with corner point
-        x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] = x_square # set the created square to the original array
+        dim1,dim2 = x_square.shape  # get the dimensions(rows,columns respectively) from the array
+        x_square[1:dim1-1] = 2  # set the rows to 2 for all rows except the ones with corner point
+        x_square[1:dim1-1,0] = 0  # set the first columns to 0 for all rows except the ones with corner point
+        x_square[1:dim1-1,dim2-1] = 0  # set the last columns to 0 for all rows except the ones with corner point
+        x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] = x_square  # set the created square to the original array
     return x_
 
 
@@ -180,31 +183,32 @@ def solve_de1cd16c(x):
     Returns:
         A copy of x with required transformations applied
     """
-    x_ = x.copy()                               # make a copy of x
-    elements = np.unique(x_)                    # find all unique elements in the array
-    find_element = -1                           # assume the element that is to counted is -1
+    x_ = x.copy()  # make a copy of x
+    elements = np.unique(x_)  # find all unique elements in the array
+    find_element = -1  # assume the element that is to counted is -1
     for element in elements:
         locations = np.argwhere(x_ == element)  # find locations of the given element
-        x0,y0 = locations[0]                    # get the first location where the element is found
-        x1,y1 = locations[1]                    # get the second location where the element is found
+        x0,y0 = locations[0]  # get the first location where the element is found
+        x1,y1 = locations[1]  # get the second location where the element is found
         if abs(x0-x1) == 1 or abs(y0-y1) == 1:  # check if the two elements are close to each other 
-            continue                            # if yes,continue
+            continue  # if yes,continue
         else:
-            find_element = element              # if no, we have found the element that is to be counted
-            break                               # search is completed,break the loop
-    maxcount = 0                                # start with initial count as 0
-    x__ = []                                    # start with initial array as empty
+            find_element = element  # if no, we have found the element that is to be counted
+            break  # search is completed,break the loop
+    maxcount = 0  # start with initial count as 0
+    x__ = []  # start with initial array as empty
     for element in elements:
-        if element == find_element:             # if current element is the element to be counted,move to the next element
+        if element == find_element:  # if current element is the element to be counted,move to the next element
             continue
         else:
-            locations = np.argwhere(x_ == element) # find locations of the current element in the array
-            element_area = x_[locations[0][0]:locations[-1][0]+1,locations[0][1]:locations[-1][1]+1] # slice the original array so as to get a array with current element in majority
-            count = len(element_area[element_area == find_element]) # count the points where the find_element occurs
+            locations = np.argwhere(x_ == element)  # find locations of the current element in the array
+            # slice the original array so as to get a array with current element in majority
+            element_area = x_[locations[0][0]:locations[-1][0]+1,locations[0][1]:locations[-1][1]+1]
+            count = len(element_area[element_area == find_element])  # count the points where the find_element occurs
             if count > maxcount:
-                maxcount = count                                    # update the maxcount to the largest found count
-                x__ = np.array(element).reshape(1,1)                # reshape the current element as per requirement
-    return x__                                                      # return the solution
+                maxcount = count  # update the maxcount to the largest found count
+                x__ = np.array(element).reshape(1,1)  # reshape the current element as per requirement
+    return x__  # return the solution
 
 
 def solve_794b24be(x):
