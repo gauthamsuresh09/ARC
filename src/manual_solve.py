@@ -91,6 +91,36 @@ def solve_dc0a314f(x):
     x5 = x__[result[0][0]:result[-1][0]+1,result[0][1]:result[-1][1]+1]  # slice the created array by the location of the green squares
     return x5                                                            # return the solution
 
+def solve_af902bf9(x):
+    """
+    Solves task af902bf9
+    
+    Description:
+       
+    Correctness:
+        All the given cases are solved.
+   
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x_ = x.copy()                    # make a copy of x
+    result = np.argwhere(x_>0)       # find the locations of the corner point of the squares
+    i = 0                           
+    while i < len(result):           
+        corner1 = result[i]          # get the left first corner on top of the square
+        corner4 = result[i+3]        # get the right most corner on bottom of the square
+        i+=4                         # increment for the next square
+        x_square = x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] # slice the square from the array
+        dim1,dim2 = x_square.shape        # get the dimensions(rows,columns respectively) from the array
+        x_square[1:dim1-1] = 2            # set the rows to 2 for all rows except the ones with corner point
+        x_square[1:dim1-1,0] = 0          # set the first columns to 0 for all rows except the ones with corner point
+        x_square[1:dim1-1,dim2-1] = 0     # set the last columns to 0 for all rows except the ones with corner point
+        x_[corner1[0]:corner4[0]+1,corner1[1]:corner4[1]+1] = x_square # set the created square to the original array
+    return x_
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
