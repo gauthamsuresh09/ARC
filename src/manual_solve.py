@@ -417,6 +417,165 @@ def solve_6855a6e4(x):
         x[:, right_line_col + 2:] = 0  # Set initial blocks of figure to black
     return x
 
+
+def set_to_bounds(i_s, i_e, j_s, j_e, low=0, high=1):
+    """
+    Makes sure the given index values stay with the
+    bounds (low and high). This works only for 2 dimensional
+    square matrices where low and high are same in both
+    dimensions.
+
+    Arguments:
+        i_s : Starting value for row index
+        i_e : Ending value for row index
+        j_s : Starting value for column index
+        j_e : Ending value for column index
+        low : Minimum value for index possible
+        high : Maximum value for index possible
+
+    Returns:
+        Values within bounds for given index positions
+    """
+    if i_s < low:
+        i_s = low
+    if i_e > high:
+        i_e = high
+    if j_s < low:
+        j_s = low
+    if j_e > high:
+        j_e = high
+    return i_s, i_e, j_s, j_e
+
+
+def solve_22233c11(x):
+    """
+    Solves the task 22233c11
+
+    Description:
+        For this task, we are given a square grid with patterns
+        having two green squares connected via either principal
+        or secondary diagonals of the matrices. There can be multiple
+        such patterns in the grid. For each such pattern identified,
+        we have to add two blue squares of same size to their neighbourhood.
+        Positions of these blue squares will depend on the following :
+        1. Positions of the green squares
+        2. Whether green squares are connected via principal or secondary
+           diagonal
+        The positions for blue squares can be determined once we identify
+        the above two. Finally, these two squares are marked as blue.
+
+    Correctness:
+        All the given cases are solved.
+
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x = x.copy()  # Create copy of input array
+    rows, cols = x.shape  # Get row and column count
+    green = 3  # Value for green
+    blue = 8  # Value for blue
+
+    found = []  # For figures already visited
+    # Loop through each block on the grid
+    # We will always find the first block of top
+    # part for the figure first. The algorithm makes
+    # use of this to find the pattern and solve the task.
+    for i in range(rows):
+        for j in range(cols):
+            if x[i][j] == green:
+                # Check if this figure/square was already visited
+                done = any([all([i >= f[0], i <= f[1], j >= f[2], j <= f[3]]) for f in found])
+                if done:
+                    continue  # Go to next block as this square was already visited
+                # Get size of smaller squares in the figure
+                # For this we start from current cell and we move right till
+                # we find a cell that's not green
+                # This will give count as n-1 for smaller square of size n
+                # So if size of smaller square is 2, we get 1 as c
+                c = 0  # Initialise count as 0
+                while (j + c + 1) < cols and x[i][j + c + 1] == green:
+                    c += 1
+                # Set starting column and ending column values for smaller square
+                start_pos = j
+                end_pos = j + c
+
+                # Now there are two ways the pattern can come
+                # Either the squares are connected via principal diagonal or
+                # secondary diagonal
+
+                # Check if its connected via secondary diagonal
+                # For this, lets set the positions of larger
+                # square (parent matrix) which contains the two small squares
+                s_i = i  # Starting row for the square
+                e_i = i + 2 * (c + 1)  # Ending row for the square
+                s_j = j - c - 1  # Starting column + 1 for the square
+                e_j = end_pos + 1  # Ending column + 1 for the square
+                parent_matrix = x[s_i:e_i, s_j:e_j]  # Get parent matrix
+                parent_matrix_diag = np.fliplr(parent_matrix).diagonal()  # Get secondary diagonal
+                if np.all(parent_matrix_diag == green):  # Check if all blocks in diagonal are green
+                    found.append([s_i, e_i - 1, s_j, e_j - 1])  # Mark the visit to this parent square
+                    # Lets set the square on top left first to blue
+                    # Get index positions for the square
+                    top_left_s_i = s_i - (1 + c)
+                    top_left_e_i = s_i - 1
+                    top_left_s_j = s_j - (c + 1)
+                    top_left_e_j = s_j - 1
+                    # Modify the index values so that they are within bounds
+                    top_left_s_i, top_left_e_i, top_left_s_j, top_left_e_j = set_to_bounds(
+                        top_left_s_i, top_left_e_i, top_left_s_j, top_left_e_j, low=0, high=rows-1)
+                    # Mark the required blocks as blue
+                    x[top_left_s_i:top_left_e_i + 1, top_left_s_j:top_left_e_j + 1] = blue
+
+                    # Now, set the square on bottom right to blue
+                    # Get index positions for the square
+                    bottom_right_s_i = e_i
+                    bottom_right_e_i = e_i + c
+                    bottom_right_s_j = e_j
+                    bottom_right_e_j = e_j + c
+                    # Modify the index values so that they are within bounds
+                    bottom_right_s_i, bottom_right_e_i, bottom_right_s_j, bottom_right_e_j = set_to_bounds(
+                        bottom_right_s_i, bottom_right_e_i, bottom_right_s_j, bottom_right_e_j, low=0, high=rows-1)
+                    # Mark the required blocks as blue
+                    x[bottom_right_s_i:bottom_right_e_i + 1, bottom_right_s_j:bottom_right_e_j + 1] = blue
+                    continue  # Go to next block
+
+                # Check if they are connected via principal diagonal
+                # Get index positions for parent matrix
+                # s_i and e_i remains the same as before
+                s_j = start_pos  # Starting column + 1 for the square
+                e_j = j + 2 * (c + 1)  # Ending column + 1 for the square
+                parent_matrix = x[s_i:e_i, s_j:e_j]  # Get parent matrix
+                parent_matrix_diag = parent_matrix.diagonal()  # Get principal diagonal
+                if np.all(parent_matrix_diag == 3):  # Check if all blocks in diagonal are green
+                    found.append([s_i, e_i - 1, s_j, e_j - 1])  # Mark the visit to this parent square
+                    # Lets set the square on top right first to blue
+                    # Get index positions for the square
+                    top_right_s_i = s_i - (c + 1)
+                    top_right_e_i = s_i - 1
+                    top_right_s_j = e_j
+                    top_right_e_j = e_j + c
+                    # Modify the index values so that they are within bounds
+                    top_right_s_i, top_right_e_i, top_right_s_j, top_right_e_j = set_to_bounds(
+                        top_right_s_i, top_right_e_i, top_right_s_j, top_right_e_j, low=0, high=rows-1)
+                    # Mark the required blocks as blue
+                    x[top_right_s_i:top_right_e_i + 1, top_right_s_j:top_right_e_j + 1] = blue
+
+                    # Now, set the square on bottom left to blue
+                    # Get index positions for the square
+                    bottom_left_s_i = e_i
+                    bottom_left_e_i = e_i + c
+                    bottom_left_s_j = s_j - (c + 1)
+                    bottom_left_e_j = s_j - 1
+                    # Modify the index values so that they are within bounds
+                    bottom_left_s_i, bottom_left_e_i, bottom_left_s_j, bottom_left_e_j = set_to_bounds(
+                        bottom_left_s_i, bottom_left_e_i, bottom_left_s_j, bottom_left_e_j, low=0, high=rows-1)
+                    # Mark the required blocks as blue
+                    x[bottom_left_s_i:bottom_left_e_i + 1, bottom_left_s_j:bottom_left_e_j + 1] = blue
+    return x
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
