@@ -64,3 +64,105 @@ When your output grid is ready, click the green "Submit!" button to check your a
 After you've obtained the correct answer for the current test input grid, you can switch to the next test input grid for the task using the "Next test input" button (if there is any available; most tasks only have one test input).
 
 When you're done with a task, use the "load task" button to open a new task.
+
+
+## Manual Solutions
+Manual hand-coded solutions for few tasks are available in `src/manual_solve.py` script.  
+The manual solutions are available for following 9 tasks (ordered by their difficulty) :  
+- 83302e8f
+- 22233c11
+- dc0a314f
+- 6855a6e4
+- 68b16354
+- af902bf9
+- 794b24be
+- de1cd16c
+- 0a938d79
+
+### Description of tasks
+#### 83302e8f
+For this task, we are given a square grid with multiple squares (colour black)
+of equal dimension in it. The number of such square and their position
+are deterministic, for a given grid. The squares share boundary between
+each other (main colour of it being blue) and one or more blocks in the
+boundary can have same colour as square (black). Our task is to modify
+the grid in such a way that the squares that are connected with other
+square(s) are coloured with yellow and isolated ones are coloured with green.
+The colour of black connecting blocks in the boundary is also changed to yellow  
+
+![Example for task 83302e8f](./img/83302e8f.png)
+
+#### 22233c11
+For this task, we are given a square grid with patterns
+having two green squares connected via either principal
+or secondary diagonals of the matrices. There can be multiple
+such patterns in the grid. For each such pattern identified,
+we have to add two blue squares of same size to their neighbourhood.
+Positions of these blue squares will depend on the following :  
+1. Positions of the green squares  
+2. Whether green squares are connected via principal or secondary
+   diagonal  
+The positions for blue squares can be determined once we identify
+the above two. Finally, these two squares are marked as blue.
+
+![Example for task 22233c11](./img/22233c11.png)
+
+#### dc0a314f
+Given an array, we must find what values should be put into a square with green colours(3). The whole array
+seems to be symmetric and the values taken up by the green points should be replaced by the other elements 
+present in the array.
+
+![Example for task dc0a314f](./img/dc0a314f.png)
+
+#### 6855a6e4
+For this task, we are given a square grid with two red shaped and
+two grey shaped items in it. The items/figures with red colour have
+square bracket shape ( [ or ] ) and they appear either horizontally
+or vertically in an enclosing manner (eg. [ ] for vertical). The
+grey shapes occur outside the red shapes and their positions can be
+determined. Our task is to find the grey figures, flip them horizontally
+or vertically based on alignment of red shape, and then move them from
+outside to inside blocks of red enclosing brackets.
+
+![Example for task 6855a6e4](./img/6855a6e4.png)
+
+#### af902bf9
+There is an array given with multiple non-zero corner points of a square. The objective is to find
+these squares and fill all the elements with red colour (2) except the rows and columns containing 
+the corner of the squares.
+
+![Example for task af902bf9](./img/af902bf9.png)
+
+#### 0a938d79
+The initial stage of the task contains two non-zero elements in the given array.The problem to solve
+here is then identifying the rows or columns they are situated in and expanding it to the whole row/columns
+depending on the dimensions of the array.The same must be done to equidistant rows/columns starting
+from the non-zero elements to the end of the array. The aforementioned distance is the space
+between the non-zero elements.
+
+![Example for task 0a938d79](./img/0a938d79.png)
+
+#### de1cd16c
+There is an array given with multiple values as elements. Some of these have quadrilateral shaped 
+areas in the array where they are present in the majority. The one in minority is one of these other
+values. This pattern(a colour dominating other in a quadrilateral) is repeated with other values too.
+The task here is to find the colour/value of the area where there are most number of these 'minority'
+values in comparison to others.
+
+![Example for task de1cd16c](./img/de1cd16c.png)
+
+#### 794b24be
+For this task, we are given a square grid (as Numpy array)
+with few blocks filled with blue colour. Our task is to take
+upper-right half triangle of the grid, fill k blocks with red
+colour by going row-wise from left, where k is the count of
+blocks with blue colour in the original grid. All the blue blocks
+in original grid are set to black as well.
+
+![Example for task 794b24be](./img/794b24be.png)
+
+#### 68b16354
+There is an array given with multiple non-zero values. The task here is to create the array which
+closely resembles the input array.
+
+![Example for task 68b16354](./img/68b16354.png)
