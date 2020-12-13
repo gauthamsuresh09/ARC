@@ -31,6 +31,99 @@ def solve_794b24be(x):
     return x
 
 
+def solve_83302e8f(x):
+    """
+    Solves the task 833302e8f
+
+    Description:
+        For this task, we are given a square grid with multiple squares (colour black)
+        of equal dimension in it. The number of such square and their position
+        are deterministic, for a given grid. The squares share boundary between
+        each other (main colour of it being blue) and one or more blocks in the
+        boundary can have same colour as square (black). Our task is to modify
+        the grid in such a way that the squares that are connected with other
+        square(s) are coloured with yellow and isolated ones are coloured with green.
+        The colour of black connecting blocks in the boundary is also changed to yellow
+
+    Correctness:
+        All the given cases are solved.
+
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x = x.copy()  # Create copy of input array
+    arr_len, _ = x.shape  # Get array length
+
+    # Find length of squares in the grid
+    # Start from top-left corner and go diagonally till
+    # we find a blue box in any of the blocks on top or left
+    # side of current block.
+    square_len = -1
+    i = 0
+    while (square_len == -1 and i < arr_len):
+        if np.any(x[:i + 1, i]) or np.any(x[i, :i + 1]):  # Check for any non-zero block on top and left
+            square_len = i
+        i += 1
+    if square_len == -1:
+        raise Exception("Square pattern not found. Please check the input")
+
+    num_squares = int((1 + arr_len) / (1 + square_len))  # Get number of squares
+
+    # Loop through all squares, starting from top-left
+    # Modify colour of blocks according to pattern matched
+    for i in range(num_squares):
+        for j in range(num_squares):
+            # Set edge indices for boundary around the square
+            row_s = i * (square_len + 1) - 1  # Start of row index
+            row_e = square_len * (i + 1) + i  # End of row index
+            col_s = j * (square_len + 1) - 1  # Start of row column
+            col_e = square_len * (j + 1) + j  # End of row column
+
+            # Set corner indices for the square
+            sq_row_s = row_s + 1  # Starting of row index
+            sq_row_e = row_e  # Ending row index
+            sq_col_s = col_s + 1  # Starting column index
+            sq_col_e = col_e  # Ending column index
+
+            # Handle cases of row start value being negative
+            row_s_t = 0 if row_s == -1 else row_s
+
+            # Check if square touches another one using its boundary
+            # and set it to yellow if it does or green otherwise.
+            # Check left boundary
+            if col_s > -1:
+                if np.any(x[row_s_t:row_e + 1, col_s] == 0):  # Check if any value is black
+                    x[sq_row_s:sq_row_e, sq_col_s:sq_col_e] = 4  # Set the square to yellow
+                    continue
+            # Check right boundary
+            if col_e < arr_len:
+                if np.any(x[row_s_t:row_e + 1, col_e] == 0):  # Check if any value is black
+                    x[sq_row_s:sq_row_e, sq_col_s:sq_col_e] = 4  # Set the square to yellow
+                    continue
+
+            col_s_t = 0 if col_s == -1 else col_s
+            # Check top boundary
+            if row_s > -1:
+                if np.any(x[row_s, col_s_t:col_e + 1] == 0):  # Check if any value is black
+                    x[sq_row_s:sq_row_e, sq_col_s:sq_col_e] = 4  # Set the square to yellow
+                    continue
+            # Check bottom boundary
+            if row_e < arr_len:
+                if np.any(x[row_e, col_s_t:col_e + 1] == 0):  # Check if any value is black
+                    x[sq_row_s:sq_row_e, sq_col_s:sq_col_e] = 4  # Set the square to yellow
+                    continue
+            # If we reach here, then the square doesnt have
+            # any black block in its boundary. This means
+            # it should have green colour in output
+            x[sq_row_s:sq_row_e, sq_col_s:sq_col_e] = 3  # Set the square to green
+    # All the remaining black blocks are the ones in boundary
+    # We can set all of them to yellow
+    x[x == 0] = 4
+    return x
+
 def main():
     # Find all the functions defined in this file whose names are
     # like solve_abcd1234(), and run them.
