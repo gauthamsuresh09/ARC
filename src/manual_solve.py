@@ -11,38 +11,54 @@ import re
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
 def solve_0a938d79(x):
-    dim1,dim2 = x.shape
-    print(dim1,dim2)
-    x_ = x.copy()
-    result = np.argwhere(x_ > 0)
-    values = x_[x_>0]
-    if dim1 > dim2:
-        index0 = result[0][0]
-        index1 = result[1][0]
-        intervals = index1-index0
-        i = index0
-        j = index1
+    """
+    Solves task 0a938d79
+    
+    Description:
+        This task involves filling in elements row wise or column wise depending on the dimensions of the array
+        and the non-zero elements. First, I check which dimension(row or column) is larger.Then,the non-zero elements 
+        are identified and the distance between them is calculated (in rows or columns) and hereafter the 
+        appropriate rows/columns are filled with non-zero elements in the intervals measured by the distance.
+        
+    Correctness:
+        All the given cases are solved.
+   
+    Arguments:
+        x : Input Numpy array of dimension 2 and unequal shape
+            values for both axes
+    Returns:
+        A copy of x with required transformations applied
+    """
+    dim1,dim2 = x.shape                # get the dimensions(rows,columns respectively) from the array
+    x_ = x.copy()                      # make a copy of x
+    result = np.argwhere(x_ > 0)       # find the locations of the non-zero points
+    values = x_[x_>0]                  # get the values of the non-zero points
+    if dim1 > dim2:                    # check if rows are greater than columns
+        index0 = result[0][0]          # get the row index of the first non-zero point
+        index1 = result[1][0]          # get the row index of the second non-zero point
+        intervals = index1-index0      # find the distance between them
+        i = index0                     # start from index0
+        j = index1                     # start from index1
         while i < dim1:
-            x_[i] = values[0]
-            i+=2*intervals
+            x_[i] = values[0]          # assign the first non-zero values to row i
+            i+=2*intervals             # increment by twice the interval size
         while j < dim1:
-            x_[j] = values[1]    
-            j +=2*intervals
+            x_[j] = values[1]          # assign the second non-zero values to row j
+            j +=2*intervals            # increment by twice the interval size
     else:
-        result = np.argwhere(x_ > 0)
-        values = x_[x_>0]
-        index0 = result[0][1]
-        index1 = result[1][1]
-        intervals = index1-index0
-        i = index0
-        j = index1
+        index0 = result[0][1]          # get the column index of the first non-zero point
+        index1 = result[1][1]          # get the column index of the second non-zero point
+        intervals = index1-index0      # find the distance between them
+        i = index0                     # start from index0
+        j = index1                     # start from index1
         while i < dim2:
-            x_[:,i] = values[0]
-            i +=2*intervals
+            x_[:,i] = values[0]       # assign the first non-zero values to column i
+            i +=2*intervals           # increment by twice the interval size
         while j < dim2:
-            x_[:,j] = values[1]    
-            j +=2*intervals
-    return x_
+            x_[:,j] = values[1]       # assign the second non-zero values to column j
+            j +=2*intervals           # increment by twice the interval size
+    return x_                         # return solution
+
 
 def solve_68b16354(x):
     """
