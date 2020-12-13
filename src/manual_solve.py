@@ -27,6 +27,7 @@ def solve_0a938d79(x):
     Arguments:
         x : Input Numpy array of dimension 2 and unequal shape
             values for both axes
+
     Returns:
         A copy of x with required transformations applied
     """
@@ -75,12 +76,14 @@ def solve_68b16354(x):
     Arguments:
         x : Input Numpy array of dimension 2 and equal shape
             values for both axes
+
     Returns:
         A copy of x with required transformations applied
     """
     x_ = x.copy()          # make a copy of x
     x_ = np.flip(x_,0)     # flip the array horizontally
     return x_              # return the solution
+
 
 def solve_dc0a314f(x):
     """
@@ -101,6 +104,7 @@ def solve_dc0a314f(x):
     Arguments:
         x : Input Numpy array of dimension 2 and equal shape
             values for both axes
+
     Returns:
         A copy of x with required transformations applied
     """
@@ -134,6 +138,7 @@ def solve_af902bf9(x):
     Arguments:
         x : Input Numpy array of dimension 2 and equal shape
             values for both axes
+
     Returns:
         A copy of x with required transformations applied
     """
@@ -167,10 +172,11 @@ def solve_de1cd16c(x):
        
     Correctness:
         All the given cases are solved.
-   
+
     Arguments:
         x : Input Numpy array of dimension 2 and equal shape
             values for both axes
+
     Returns:
         A copy of x with required transformations applied
     """
@@ -200,6 +206,44 @@ def solve_de1cd16c(x):
                 x__ = np.array(element).reshape(1,1)                # reshape the current element as per requirement
     return x__                                                      # return the solution
 
+
+def solve_794b24be(x):
+    """
+    Solves the task 794b24be
+
+    Description:
+        For this task, we are given a square grid (as Numpy array)
+        with few blocks filled with blue colour. Our task is to take
+        upper-right half triangle of the grid, fill k blocks with red
+        colour by going row-wise from left, where k is the count of
+        blocks with blue colour in the original grid. All the blue blocks
+        in original grid are set to black as well.
+
+    Correctness:
+        All the given cases are solved.
+
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+
+    Returns:
+        A copy of x with required transformations applied
+    """
+    x = x.copy()  # Create copy of input array
+    rows, cols = x.shape  # Get row and column count
+    blue_blocks = x==1  # Get blue blocks
+    blue_indices = np.nonzero(blue_blocks)  # Get indices of blue blocks
+    # Get count of blue blocks
+    # Ref : https://stackoverflow.com/questions/8364674/how-to-count-the-number-of-true-elements-in-a-numpy-bool-array
+    blue_count = np.sum(blue_blocks)
+    x[blue_indices] = 0  # Set blue blocks to black
+    # Get first "blue_count" number of blocks in the
+    # upper half triangle of the grid
+    triu_row_indices, triu_col_indices = map(lambda x: x[:blue_count], np.triu_indices(rows))
+    x[triu_row_indices, triu_col_indices] = 2  # Set the blocks to red
+    return x
+
+
 def solve_83302e8f(x):
     """
     Solves the task 833302e8f
@@ -220,6 +264,7 @@ def solve_83302e8f(x):
     Arguments:
         x : Input Numpy array of dimension 2 and equal shape
             values for both axes
+
     Returns:
         A copy of x with required transformations applied
     """
@@ -296,26 +341,27 @@ def solve_83302e8f(x):
 
 def solve_6855a6e4(x):
     """
-        Solves the task 6855a6e4
+    Solves the task 6855a6e4
 
-        Description:
-            For this task, we are given a square grid with two red shaped and
-            two grey shaped items in it. The items/figures with red colour have
-            square bracket shape ( [ or ] ) and they appear either horizontally
-            or vertically in an enclosing manner (eg. [ ] for vertical). The
-            grey shapes occur outside the red shapes and their positions can be
-            determined. Our task is to find the grey figures, flip them horizontally
-            or vertically based on alignment of red shape, and then move them from
-            outside to inside blocks of red enclosing brackets.
+    Description:
+        For this task, we are given a square grid with two red shaped and
+        two grey shaped items in it. The items/figures with red colour have
+        square bracket shape ( [ or ] ) and they appear either horizontally
+        or vertically in an enclosing manner (eg. [ ] for vertical). The
+        grey shapes occur outside the red shapes and their positions can be
+        determined. Our task is to find the grey figures, flip them horizontally
+        or vertically based on alignment of red shape, and then move them from
+        outside to inside blocks of red enclosing brackets.
 
-        Correctness:
-            All the given cases are solved.
+    Correctness:
+        All the given cases are solved.
 
-        Arguments:
-            x : Input Numpy array of dimension 2 and equal shape
-                values for both axes
-        Returns:
-            A copy of x with required transformations applied
+    Arguments:
+        x : Input Numpy array of dimension 2 and equal shape
+            values for both axes
+
+    Returns:
+        A copy of x with required transformations applied
     """
     x = x.copy()  # Create copy of input array
     # Get row and column positions for the red coloured
