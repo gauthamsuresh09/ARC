@@ -10,12 +10,15 @@ import re
 ### result. Name them according to the task ID as in the three
 ### examples below. Delete the three examples. The tasks you choose
 ### must be in the data/training directory, not data/evaluation.
+
+
 def get_upper_half_indices(x):
     rows, cols = x.shape
     assert rows == cols
     for i in range(rows):
         for j in range(i, rows):
             yield (i,j)
+
 
 def solve_794b24be(x):
     x = x.copy()
@@ -122,6 +125,84 @@ def solve_83302e8f(x):
     # All the remaining black blocks are the ones in boundary
     # We can set all of them to yellow
     x[x == 0] = 4
+    return x
+
+
+def solve_6855a6e4(x):
+    """
+        Solves the task 6855a6e4
+
+        Description:
+            For this task, we are given a square grid with two red shaped and
+            two grey shaped items in it. The items/figures with red colour have
+            square bracket shape ( [ or ] ) and they appear either horizontally
+            or vertically in an enclosing manner (eg. [ ] for vertical). The
+            grey shapes occur outside the red shapes and their positions can be
+            determined. Our task is to find the grey figures, flip them horizontally
+            or vertically based on alignment of red shape, and then move them from
+            outside to inside blocks of red enclosing brackets.
+
+        Correctness:
+            All the given cases are solved.
+
+        Arguments:
+            x : Input Numpy array of dimension 2 and equal shape
+                values for both axes
+        Returns:
+            A copy of x with required transformations applied
+    """
+    x = x.copy()  # Create copy of input array
+    # Get row and column positions for the red coloured
+    # enclosing shapes
+    row_positions, col_positions = np.nonzero(x == 2)
+    # Get row and column positions for the grey coloured
+    # figures that we need to reposition/flip
+    fig_row_positions, fig_col_positions = np.nonzero(x == 5)
+
+    # Check if the blocks are horizontally or vertically placed on the grid
+    # We use position data of red blocks for this purpose
+
+    # Check if figures are positioned horizontally by checking first 3 red blocks
+    if (row_positions[0] == row_positions[1] == row_positions[2]) and (np.all(np.diff(col_positions[:3]) == 1)):
+        # Handle figure in top part
+        top_line_row = row_positions[0]  # Row value for the top line
+        top_figure_start = np.min(fig_row_positions)  # Start row position for figure
+        top_figure = x[top_figure_start:top_line_row - 1, :]  # Get the figure data
+        top_figure_flipped = np.flip(top_figure, 0)  # Flip the figure
+        top_figure_new_start = top_line_row + 2  # New starting row position for figure
+        top_figure_new_end = top_figure_new_start + top_figure.shape[0]  # New ending row position for figure
+        x[top_figure_new_start:top_figure_new_end, :] = top_figure_flipped  # Set values in new blocks as flipped figure
+        x[:top_line_row - 1, :] = 0  # Set initial blocks of figure to black
+
+        # Handle figure in bottom part
+        bottom_line_row = row_positions[-1]  # Row value for the bottom line
+        bottom_figure_end = np.max(fig_row_positions)  # End row position for figure
+        bottom_figure = x[bottom_line_row + 2:bottom_figure_end + 1, :]  # Get the figure data
+        bottom_figure_flipped = np.flip(bottom_figure, 0)  # Flip the figure
+        bottom_figure_new_end = bottom_line_row - 1  # New ending row position for figure
+        bottom_figure_new_start = bottom_figure_new_end - bottom_figure.shape[0]  # New starting row position for figure
+        x[bottom_figure_new_start:bottom_figure_new_end, :] = bottom_figure_flipped  # Set values in new blocks
+        x[bottom_line_row + 2:, :] = 0  # Set initial blocks of figure to black
+    else:
+        # Handle figure on left side
+        left_line_col = col_positions[0]  # Column value for the left line
+        left_figure_start = np.min(fig_col_positions)  # Start column position for figure
+        left_figure = x[:, left_figure_start:left_line_col - 1]  # Get the figure data
+        left_figure_flipped = np.flip(left_figure, 1)  # Flip the figure
+        left_figure_new_start = left_line_col + 2  # New starting column position for figure
+        left_figure_new_end = left_figure_new_start + left_figure.shape[1]  # New ending column position for figure
+        x[:, left_figure_new_start:left_figure_new_end] = left_figure_flipped  # Set values in blocks as flipped figure
+        x[:, :left_line_col - 1] = 0  # Set initial blocks of figure to black
+
+        # Handle figure on right side
+        right_line_col = col_positions[-1]  # Column value for the right line
+        right_figure_end = np.max(fig_col_positions)  # End column position for figure
+        right_figure = x[:, right_line_col + 2:right_figure_end + 1]  # Get the figure data
+        right_figure_flipped = np.flip(right_figure, 1)  # Flip the figure
+        right_figure_new_end = right_line_col - 1  # New ending column position for figure
+        right_figure_new_start = right_figure_new_end - right_figure.shape[1]  # New starting column position for figure
+        x[:, right_figure_new_start:right_figure_new_end] = right_figure_flipped  # Set values in new blocks
+        x[:, right_line_col + 2:] = 0  # Set initial blocks of figure to black
     return x
 
 def main():
